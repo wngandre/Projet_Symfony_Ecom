@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategorieController extends AbstractController
 {
@@ -29,7 +30,7 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/categories', name:'category_list')]
-    public function categories(EntityManagerInterface $em, Request $request): Response
+    public function categories(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
     {
         $category = new Category();
         $form = $this->createForm(CategorieType::class, $category);
@@ -39,7 +40,7 @@ class CategorieController extends AbstractController
             $em->persist($category);
             $em->flush();
 
-            $this->addFlash('success', 'Categorie ajoutée');
+            $this->addFlash('success', $translator->trans('category.added'));
 
             return $this->redirectToRoute('category_list');
         }
@@ -78,7 +79,7 @@ class CategorieController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('csrf'))) {
             $em->remove($category);
             $em->flush();
-            
+
             $this->addFlash('success', 'Categorie supprimée');
         }
         return $this->redirectToRoute('category_list');

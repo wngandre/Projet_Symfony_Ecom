@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 class CategorieController extends AbstractController
 {
     #[Route('/prenom/{prenom}', name: 'homepage')]
@@ -55,6 +57,7 @@ class CategorieController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/category/{id}', name: 'app_category_show')]
     public function show(Category $category = null): Response
     {

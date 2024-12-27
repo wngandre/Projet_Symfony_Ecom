@@ -6,7 +6,8 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"> {% block stylesheets %}{% endblock %}
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		{% block stylesheets %}{% endblock %}
 
 		{% block javascripts %}
 			{% block importmap %}
@@ -15,26 +16,42 @@
 		{% endblock %}
 	</head>
 	<body>
-		<header>
-			<nav>
-				<ul>
-					<li>
-						<a href="{{path('homepage',{prenom:'Machin'})}}">Prénom</a>
+		<header class="site-header">
+			<nav class="navbar">
+				<ul class="navbar-menu">
+					<li class="navbar-item">
+						<a href="{{path('all_product')}}" class="navbar-link">Home</a>
 					</li>
-					<li>
-						<a href="{{path('test')}}">Test</a>
+					{% if is_granted('ROLE_ADMIN') %}
+					<li class="navbar-item">
+						<a href="{{path('category_list')}}" class="navbar-link">Categories</a>
 					</li>
+					<li class="navbar-item">
+						<a href="{{path('app_product')}}" class="navbar-link">Ajouter un produit</a>
+					</li>
+					{% endif %}
 					{% if app.user is not null %}
-						<li>
-							Bienvenue
-							{{app.user.email}}
-						</li>
-						<li>
-							<a href="{{path('app_logout')}}">Déconnexion</a>
-						</li>
+					<li class="navbar-item">
+						<a href="{{path('app_cart')}}" class="navbar-link">Cart</a>
+					</li>
+					<div class="user-info">
+						<h1 class="user-welcome">Welcome</h1>
+						<p class="user-email">{{app.user.email}}</p>
+						{% if is_granted('ROLE_ADMIN') %}
+						<p class="user-role">Vous êtes admin</p>
+						{% else %}
+						<h2 class="user-role">Vous n'êtes pas admin</h2>
+						{% endif %}
+					</div>
+					<li class="navbar-item">
+						<a href="{{path('app_logout')}}" class="navbar-link">Logout</a>
+					</li>
 					{% else %}
-						<li>
-							<a href="{{path('app_login')}}">Connexion</a>
+						<li class="navbar-item">
+							<a class="login-link" class="login-link" href="{{path('app_login')}}">Login</a>
+						</li>
+						<li class="navbar-item">
+							<a href="{{path('app_register')}}" class="navbar-link">Register</a>
 						</li>
 					{% endif %}
 				</ul>
@@ -43,7 +60,7 @@
 
 		{% for type, messages in app.flashes %}
 			{% for msg in messages %}
-				<p class="{{ type }}">
+				<p class="{{ type }}" class="flash-message">
 					{{ msg }}
 				</p>
 			{% endfor %}

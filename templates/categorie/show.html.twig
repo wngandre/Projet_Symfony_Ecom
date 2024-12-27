@@ -1,15 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Une catégorie
+    Une catégorie
 {% endblock %}
 
 {% block body %}
-	<h1>{{ category.title }}</h1>
-	<p>{{ category.description }}</p>
-
-	<form action="{{path('app_category_delete', {id: category.id})}}" method="POST">
-		<input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ category.id) }}">
-		<input type="submit" value="Delete">
-	</form>
+    <div class="category-page">
+        <header class="category-header">
+            <h1 class="category-title">{{ category.title }}</h1>
+        </header>
+        <div class="category-description">
+            <p>{{ category.description }}</p>
+        </div>
+        <div class="category-actions">
+            <form action="{{ path('app_category_delete', { id: category.id }) }}" method="POST" class="delete-form">
+                <input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ category.id) }}">
+                <input type="submit" value="Delete" class="delete-button">
+            </form>
+            <a href="{{ path('category_list') }}" class="back-link">Retour</a>
+        </div>
+    </div>
 {% endblock %}

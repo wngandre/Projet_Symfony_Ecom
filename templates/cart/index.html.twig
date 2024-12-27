@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block body %}
+    <div class="styled-h1-p">
+    <h1>{{ mycart_name }}</h1>
+
+    {% if cart|length > 0 %}
+    <p>Vous avez {{ cart|length }} article(s) dans votre panier.</p>
+    </div>
+    <div class="table-container">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id, item in cart %}
+                    <tr>
+                        <td>
+                            {% if item.image %}
+                                <img src="{{ asset('uploads/' ~ item.image) }}" alt="{{ item.title }}" width="100">
+                            {% endif %}
+                        </td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.content }}</td>
+                        <td>
+                        <form method="post" action="{{ path('app_remove_from_cart', {id: id}) }}" class="remove-from-cart-form">
+                            <input type="submit" value="Supprimer" class="remove-button">
+                        </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}
+{% endblock %}

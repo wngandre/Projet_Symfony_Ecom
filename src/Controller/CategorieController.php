@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategorieType;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +26,17 @@ class CategorieController extends AbstractController
         ]);
     }
 
-    #[Route("/page-test", name:"test")]
-    public function test(): Response
+    #[Route("/produit", name:"all_product")] // Tout les produits
+    public function test(EntityManagerInterface $em): Response
     {
-        return $this->render('categorie/test.html.twig');
+        $produits = $em->getRepository(Product::class)->findAll();
+
+    return $this->render('categorie/test.html.twig', [
+        'produits' => $produits,
+    ]);
     }
 
-    #[Route('/categories', name:'category_list')]
+    #[Route('/categories', name:'category_list')] // ajouter un categorie
     public function categories(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
     {
         $category = new Category();
@@ -57,7 +62,7 @@ class CategorieController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')] // Uniquement les admin  peuvent ajouter une categorie
     #[Route('/category/{id}', name: 'app_category_show')]
     public function show(Category $category = null): Response
     {
@@ -71,7 +76,7 @@ class CategorieController extends AbstractController
         ]);
     }
 
-    #[Route('/category/delete/{id}', name: 'app_category_delete')]
+    #[Route('/category/delete/{id}', name: 'app_category_delete')] // Uniquement les admin  peuvent supprimer une categorie
     public function delete(Request $request, EntityManagerInterface $em, Category $category = null)
     {
         if($category == null){

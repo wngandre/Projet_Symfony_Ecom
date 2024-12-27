@@ -1,27 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Liste des catégories
+    Liste des catégories
 {% endblock %}
 
 {% block body %}
-	<h1>{{ 'category.list'|trans }}</h1>
+    <div class="categories-page">
+        <header class="categories-header">
+            <h1 class="categories-title">{{ 'category.list'|trans }}</h1>
+        </header>
 
-	{{ dump(categories) }}
+        <div class="categories-list">
+            {{ dump(categories) }}
+            {% if is_granted('ROLE_ADMIN') %}
+                {% for c in categories %}
+                    <div class="category-item">
+                        <a href="{{ path('app_category_show', { id: c.id }) }}" class="category-link">
+                            {{ c.title }}
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="no-categories">Aucune catégorie</p>
+                {% endfor %}
+            {% else %}
+                <p class="not-admin">Vous n'êtes pas admin</p>
+            {% endif %}
+        </div>
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{% for c in categories %}
-			<p>
-				<a href="{{ path('app_category_show', {id: c.id}) }}">
-					{{ c.title }}
-				</a>
-			</p>
-		{% else %}
-			<p>Aucune catégorie</p>
-		{% endfor %}
-	{% else %}
-		<p>Vous n'êtes pas admin</p>
-	{% endif %}
-
-	<h2>Ajouter une catégorie</h2>
-	{{ form(ajout_category) }}{% endblock %}
+        <div class="add-category">
+            <h2 class="add-category-title">Ajouter une catégorie</h2>
+            <div class="add-category-form">
+                {{ form(ajout_category) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

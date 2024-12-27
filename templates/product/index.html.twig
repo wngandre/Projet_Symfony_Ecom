@@ -4,22 +4,38 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Liste des produits</h1>
-	{% for p in products %}
-		<p>{{p.title}}</p>
-		{% if p.image is not empty %}
-			<img src="{{ asset('uploads/' ~ p.image) }}" style="max-width:100px;">
-		{% endif %}
+    <div class="products-page">
+        <header class="products-header">
+            <h1 class="products-title">Liste des produits</h1>
+        </header>
 
-		<form action="{{path('app_product_delete', {id: p.id})}}" method="POST">
-			<input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ p.id) }}">
-			<input type="submit" value="Delete">
-		</form>
+        <div class="products-list">
+            {% for p in products %}
+                <div class="product-item">
+                    <h2 class="product-title">{{ p.title }}</h2>
+                    <p class="product-content">{{ p.content }}</p>
+                    <p class="product-price">{{ p.price }} €</p>
+                    {% if p.image is not empty %}
+                        <div class="product-image">
+                            <img src="{{ asset('uploads/' ~ p.image) }}" alt="Image de {{ p.title }}">
+                        </div>
+                    {% endif %}
+                    <form action="{{ path('app_product_delete', { id: p.id }) }}" method="POST" class="delete-form">
+                        <input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ p.id) }}">
+                        <input type="submit" value="Delete" class="delete-button">
+                    </form>
+                </div>
+                <hr class="product-divider">
+            {% else %}
+                <p class="no-products">Aucun produit</p>
+            {% endfor %}
+        </div>
 
-		<hr>
-	{% else %}
-		<p>Aucun produit</p>
-	{% endfor %}
-
-	<h2>Ajouter un produit</h2>
-	{{form(ajout_produit)}}{% endblock %}
+        <div class="add-product">
+            <h2 class="add-product-title">Ajouter un produit</h2>
+            <div class="add-product-form">
+                {{ form(ajout_produit) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

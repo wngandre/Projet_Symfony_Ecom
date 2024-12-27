@@ -11,10 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ProductController extends AbstractController
 {
-    #[Route('/product', name: 'app_product')]
+    #[Route('/addproduct', name: 'app_product')]
     public function index(EntityManagerInterface $em, Request $request): Response
     {
         $product = new Product();
@@ -55,7 +56,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/product/delete/{id}', name: 'app_product_delete')]
+    #[Route('/addproduct/delete/{id}', name: 'app_product_delete')]
     public function delete(Request $request, EntityManagerInterface $em, Product $product = null)
     {
         if($product == null){

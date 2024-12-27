@@ -67,6 +67,33 @@ class Product
         return $this;
     }
 
+    #[ORM\Column(type: "decimal", scale: 2)]
+    private ?float $price = null;
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice($price): static
+    {
+        $this->price = (float) $price;
+        return $this;
+    }
+
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $quantity = null;
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
     public function getCreatedDate(): ?\DateTimeInterface
     {
         return $this->createdDate;

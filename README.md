@@ -1,4 +1,4 @@
-# ANDRE WANG - NICOLAS SUNG
+# ANDRE WANG - NICOLAS SUNG - Alain Sliman
 
 ## Procédure d'installation
 
